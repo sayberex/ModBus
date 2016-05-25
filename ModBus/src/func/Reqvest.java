@@ -9,8 +9,8 @@ abstract public class Reqvest {
 	private 				int			devAddr		= 0;						//DEVICE ADDR
 
 
-	private	static			int			protoMode	= 0;						//DEVICE PROTOCOL MODE ASCII/RTU
-	private static			byte[]		convDigitToASCII = new byte[] { 0x30,	//'0'
+	private	static			ProtoMode	protoMode	= ProtoMode.ASCII;			//DEVICE PROTOCOL MODE ASCII/RTU
+	private static final	byte[]		convDigitToASCII = new byte[] { 0x30,	//'0'
 																		0x31,	//'1'
 																		0x32,	//'2'
 																		0x33,	//'3'
@@ -26,35 +26,34 @@ abstract public class Reqvest {
 																		0x44,	//'D'
 																		0x45,	//'E'
 																		0x46};	//'F'
-	//fupdated
 
 	//**************************************************************************
-	public static int 	getProtoMode() 				{return protoMode;}
-	public static void 	setProtoMode(int protoMode) {Reqvest.protoMode = protoMode;}
+	public static ProtoMode getProtoMode() 				{return protoMode;}
+	public static void 		setProtoMode(ProtoMode protoMode) {Reqvest.protoMode = protoMode;}
 	//**************************************************************************
 
 
 	//**************************************************************************
-	protected int 		getDevAddr() 				{return devAddr;}
-	protected void		setDevAddr(int devAddr) 	{this.devAddr = devAddr;}
+	public int 				getDevAddr() 				{return devAddr;}
+	public void				setDevAddr(int devAddr) 	{this.devAddr = devAddr;}
 	//**************************************************************************
 
 	
 	//**************************************************************************
-	public int[] 		getBuf() 					{return buf;}
-	public byte[]		getOutBuf()					{return outbuf;}
-	protected static void setBufItem(int index, int Value) {
+	public int[] 			getBuf() 					{return buf;}
+	public byte[]			getOutBuf()					{return outbuf;}
+	protected static void 	setBufItem(int index, int Value) {
 		if ((index >= 0) && (index <= BUF_SIZE))	buf[index] = Value;
 	}
 	//**************************************************************************
 	
 	//**************************************************************************
-	public  	int		getSize() 					{return size;}
-	protected 	void 	setSize(int size) 			{Reqvest.size = size;}
+	public  	int			getSize() 					{return size;}
+	protected 	void 		setSize(int size) 			{Reqvest.size = size;}
 	//**************************************************************************
 	
 	//**************************************************************************
-	abstract public int[] Build();
+	abstract public int[] 	Build();
 	//**************************************************************************
 	
 
@@ -76,22 +75,4 @@ abstract public class Reqvest {
 		LRC = ((long)0xFF - LRC) + 1;
 		return (byte)(LRC);
 	}
-	
-	/*
-	protected static byte calcLRC() {
-		long LRC = 0;
-		long d = 0xFF;
-		int HighByte;
-		int LowByte;
-
-		for (int i = 0; i < size; i++) {
-			HighByte = (buf[i]&0xFF00)>>>8;
-			LowByte = buf[i]&0xFF;
-			LRC += (HighByte + LowByte);
-		}
-
-		LRC = ((long)0xFF - LRC) + 1;
-		return (byte)(LRC);
-	}
-	*/
 }

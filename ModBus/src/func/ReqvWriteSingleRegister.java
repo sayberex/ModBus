@@ -4,25 +4,23 @@ public class ReqvWriteSingleRegister extends Reqvest {
 	private int 		addr;
 	private	int			reg;
 
-	
-	public ReqvWriteSingleRegister(int devAddr) {
+	public ReqvWriteSingleRegister(ProtoMode protoMode, int devAddr) {
 		reg 	= 0;
 		addr 	= 0;
+		super.setProtoMode(protoMode);
 		super.setDevAddr(devAddr);
 	}
-	
-	public ReqvWriteSingleRegister(int devAddr, int addr) {
+
+	public ReqvWriteSingleRegister(ProtoMode protoMode, int devAddr, int addr) {
 		this.addr 		= addr;
+		super.setProtoMode(protoMode);
 		super.setDevAddr(devAddr);
 	}
 
-	public int getAddr() {
-		return addr;
-	}
-
-	public int getReg() {
-		return reg;
-	}
+	//**************************************************************************
+	public int 			getAddr() 		{return addr;}
+	public int 			getReg() 		{return reg;}
+	//**************************************************************************
 
 	public void setAddr(int addr) {
 		if ((addr >= 0) && (addr <= 0xFFFF))	this.addr = addr;
@@ -45,7 +43,10 @@ public class ReqvWriteSingleRegister extends Reqvest {
 		super.setSize(6);					//		- Set Packet Size
 		super.setBufItem(super.getSize(), super.calcLRC());
 		super.setSize(super.getSize()+1);
-		super.asciiSerialize();
+		
+		
+		if (super.getProtoMode() == ProtoMode.ASCII)	super.asciiSerialize();
+	
 		return super.getBuf();
 	}
 	
